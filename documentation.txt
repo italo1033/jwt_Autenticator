@@ -1,0 +1,7 @@
+1. npm install express-generator -g
+2. express jwt-express-mongodb
+3. cd jwt-express-mongodb
+4. npm install
+5. muda a porta em www
+6. npm install -g nodemon
+7. npm install -g jsonwebtoken
