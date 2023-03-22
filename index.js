@@ -9,7 +9,7 @@ app.use(express.json());
 app.post("/login", (req,res, next) => {
     let statusAutenticator;
     const {email, password} = req.body.userData;
-    // fetch(`http://172.16.70.37/users/${email}&${password}`)
+    fetch(`http://172.16.70.37/users/${email}&${password}`)
     
     .then(result => {
         if(result.access === "enabled"){
