@@ -1,3 +1,3 @@
 const config   = {}
-config.JWT_KEY = 'Toledo@23'
+config.JWT_KEY = 'Toledo@233'
 module.exports = config;

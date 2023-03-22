@@ -1,19 +1,24 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-
+const config = require('./config/index')
+const cors = require('cors')
 const app = express();
 
-
+app.use(cors());
 app.use(express.json());
-
-
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
-
 app.post("/login", (req,res, next) => {
+    let statusAutenticator;
     const {email, password} = req.body.userData;
+    // fetch(`http://172.16.70.37/users/${email}&${password}`)
+    
+    .then(result => {
+        if(result.access === "enabled"){
+            statusAutenticator = true
+        }else{
+            statusAutenticator = false
+        }}) 
+    .catch(console.error);
+
 
     if(email === undefined || password === undefined){
         res.status(401).json({
@@ -22,18 +27,24 @@ app.post("/login", (req,res, next) => {
             message: 'E-mail e /or passswor inválid.'
         })
     }else{
-        let tokenData={
-            id:101,
+        if(statusAutenticator){
+            let tokenData={
+                id:101,
+            }
+            let generatedToken = jwt.sign( tokenData, config.JWT_KEY,{expiresIn:'10m'})
+            
+            res.json({
+                sucess:true,
+                token: generatedToken
+            }) 
+        }else{
+            res.json({
+                sucess:false,
+            }) 
         }
-        let generatedToken = jwt.sign( tokenData, 'somepass',{expiresIn:'1m'})
-        
-        res.json({
-            sucess:true,
-            token: generatedToken
-        })  
     }
 })
 
-app.listen(3001, () => {
+app.listen(5000, () => {
     console.log(`Server Started at ${3001}`)
 })
