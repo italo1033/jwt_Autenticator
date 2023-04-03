@@ -7,6 +7,9 @@ const secretKey = "mySecretKey123";
 const expiresIn = {expiresIn: '1h'};
 app.use(cors());
 app.use(express.json());
+app.get('/', (req, res) => {
+    res.send('Hello World!')
+})
 app.post("/login", (req,res, next) => {
     const {email, password} = req.body.userData;
     const options = {method: 'GET', url: `http://172.16.70.37/users/${email}&${password}`};
