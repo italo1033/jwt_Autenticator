@@ -29,7 +29,7 @@ app.post("/login", (req,res, next) => {
                 "apelido": results.apelido,
                 "senha": results.senha,
                 "email": results.email,
-                "permission": ['login','homeuser']
+                "permission": ['login','HomeUser']
             }
             let generatedToken = jwt.sign( tokenData, secretKey, expiresIn)
             res.json({
@@ -65,7 +65,7 @@ app.post("/login", (req,res, next) => {
 })
 
 app.post("/validation" , (req,res)=>{
-    const {token} = req.body.userData;
+    const {token, page} = req.body.userData;
     jwt.verify(token, secretKey, function(err, decoded) {
         if (err) {
             res.json({
@@ -73,10 +73,18 @@ app.post("/validation" , (req,res)=>{
                 menssage:'tokem Inválido'
             }) 
         } else {
-            res.json({
-                sucess:true,
-                menssage:'tokem valido'
-            }) 
+           if(decoded.permission.includes(page)){
+                res.json({
+                    sucess:true,
+                    menssage:'tokem válido'
+                }) 
+           }
+           else{
+                res.json({
+                    sucess:false,
+                    menssage:'tokem inválido'
+                }) 
+           }
         }
     });
 })
